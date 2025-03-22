@@ -1,7 +1,7 @@
 package mission.model;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 public class Member {
     private final String name;
@@ -19,11 +19,11 @@ public class Member {
     }
 
     String getLastNumber() {
-        try {
-            return Pattern.compile("(?<=-)[0-9]+$").matcher(phoneNumber).group();
-        } catch (PatternSyntaxException e) {
-            throw new IllegalStateException("[ERROR] 뒷번호를 추출할 수 없습니다 : " + phoneNumber);
+        Matcher matcher = Pattern.compile("(?<=-)[0-9]+$").matcher(phoneNumber);
+        if (matcher.find()) {
+            return matcher.group();
         }
+        throw new IllegalStateException("[ERROR] 뒷번호를 추출할 수 없습니다 : " + phoneNumber);
     }
 
     public int getCoupon() {
