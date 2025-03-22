@@ -28,7 +28,8 @@ public class MembershipList {
 
     public int searchMemberCoupon(String name, String lastNumber) {
         return membershipList.stream()
-                .filter(member -> Objects.equals(member.getLastNumber(), lastNumber))
+                .filter(member -> Objects.equals(member.getLastNumber(), lastNumber)
+                        && member.getName().equals(name))
                 .map(Member::getCoupon)
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("[ERROR] 검색한 고객정보가 없습니다."));
@@ -36,7 +37,8 @@ public class MembershipList {
 
     public void addMemberCoupon(String name, String lastNumber, int amount) {
         Member found = membershipList.stream()
-                .filter(member -> Objects.equals(member.getLastNumber(), lastNumber))
+                .filter(member -> Objects.equals(member.getLastNumber(), lastNumber)
+                        && member.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("[ERROR] 검색한 고객정보가 없습니다."));
         found.addCoupon(amount);
@@ -44,7 +46,8 @@ public class MembershipList {
 
     public void subMemberCoupon(String name, String lastNumber, int amount) {
         Member found = membershipList.stream()
-                .filter(member -> Objects.equals(member.getLastNumber(), lastNumber))
+                .filter(member -> Objects.equals(member.getLastNumber(), lastNumber)
+                        && member.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("[ERROR] 검색한 고객정보가 없습니다."));
         found.subCoupon(amount);
