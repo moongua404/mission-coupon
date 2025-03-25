@@ -1,6 +1,7 @@
 package mission.controller;
 
 import java.util.List;
+import mission.exceptions.ProgramTerminateException;
 import mission.model.MembershipList;
 import mission.model.dto.MemberBasicInfoDto;
 import mission.view.InputView;
@@ -11,36 +12,35 @@ public class CouponController {
     OutputView outputView;
     MembershipList membershipList;
 
-    public CouponController(InputView inputView, OutputView outputView) {
+    public CouponController(InputView inputView, OutputView outputView, MembershipList membershipList) {
         this.inputView = inputView;
         this.outputView = outputView;
-        this.membershipList = new MembershipList();
+        this.membershipList = membershipList;
     }
 
     public void run() {
-        boolean willStop = false;
-
-        while (!willStop) {
-            willStop = execute();
+        while (true) {
+            try {
+                execute();
+            } catch (ProgramTerminateException e) {
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
-    private boolean execute() {
-        try {
-            switch (inputView.inputFeature()) {
-                case 1 -> registerMember();
-                case 2 -> searchCoupon();
-                case 3 -> accumulateCoupon();
-                case 4 -> useCoupon();
-                case 5 -> {
-                    return true;
-                }
-                default -> throw new IllegalArgumentException("[ERROR] 1~5 사이의 숫자를 입력해주세요. ");
+    public void execute() {
+        switch (inputView.inputFeature()) {
+            case 1 -> registerMember();
+            case 2 -> searchCoupon();
+            case 3 -> accumulateCoupon();
+            case 4 -> useCoupon();
+            case 5 -> {
+                throw new ProgramTerminateException();
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            default -> throw new IllegalArgumentException("[ERROR] 1~5 사이의 숫자를 입력해주세요. ");
         }
-        return false;
     }
 
     private void registerMember() {

@@ -8,10 +8,10 @@ import java.util.Objects;
  * 회원 명부 클래스
  */
 public class MembershipList {
-    private List<Member> membershipList;
+    private final List<Member> membershipList;
 
     public MembershipList() {
-        membershipList = new ArrayList<Member>();
+        membershipList = new ArrayList<>();
     }
 
     public void addMember(String name, String fullNumber) {
